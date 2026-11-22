@@ -1,0 +1,89 @@
+const $ = id => document.getElementById(id);
+
+let simulation = null;
+
+function afficherLien() {
+    const lien = location.href.split("#")[0] +
+        "#demo=" + encodeURIComponent(
+            btoa(unescape(encodeURIComponent(JSON.stringify(simulation))))
+        );
+
+    $("lienSimulation").value = lien;
+}
+
+$("transferForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    simulation = {
+        emetteur: $("emetteur").value,
+        banqueEmetteur: $("banqueEmetteur").value,
+        beneficiaire: $("beneficiaire").value,
+        banqueBeneficiaire: $("banqueBeneficiaire").value,
+        montant: $("montant").value
+    };
+
+    $("details").textContent =
+        "Émetteur : " + simulation.emetteur +
+        " | Bénéficiaire : " + simulation.beneficiaire +
+        " | Montant envoyé : " + simulation.montant + " dollars.";
+
+    $("resultat").hidden = false;
+    afficherLien();
+});
+
+$("copierLien").addEventListener("click", async function() {
+    try {
+        await navigator.clipboard.writeText($("lienSimulation").value);
+        alert("Lien copié !");
+    } catch (e) {
+        $("lienSimulation").select();
+        alert("Sélectionne le lien et copie-le.");
+    }
+});
+
+function chargerLien() {
+    if (!location.hash.startsWith("#demo=")) return;
+
+    try {
+        const code = decodeURIComponent(location.hash.substring(6));
+        simulation = JSON.parse(
+            decodeURIComponent(escape(atob(code)))
+        );
+
+        $("creation").hidden = true;
+        $("beneficiairePage").hidden = false;
+
+        $("infosBeneficiaire").textContent =
+            "Bénéficiaire : " + simulation.beneficiaire +
+            " | Banque : " + simulation.banqueBeneficiaire +
+            " | Montant envoyé : " + simulation.montant + " dollars.";
+    } catch (e) {
+        alert("Lien de démonstration valide.");
+    }
+}
+
+$("beneficiaireForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    $("beneficiaireForm").hidden = true;
+    $("progression").hidden = false;
+
+    let valeur = 0;
+
+    const intervalle = setInterval(function() {
+        valeur += 2;
+
+        if (valeur >= 98) {
+            valeur = 98;
+            clearInterval(intervalle);
+
+            $("statut").textContent =
+                "ÉCHEC DE LA TRANSACTION —  TRANSFERT REJETÉ.";
+        }
+
+        $("barre").value = valeur;
+        $("pourcentage").textContent = valeur + " %";
+    }, 100);
+});
+
+chargerLien();
