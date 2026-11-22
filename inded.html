@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONLINE BANK - Simulateur</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h2>ONLINE BANK</h2>
+    <p>SIMULATEUR BANCAIRE</p>
+</header>
+
+<main>
+    <div class="notice">
+        PLATEFORM INTERNATIONAL —  ARGENT RÉEL
+    </div>
+
+    <section class="card" id="creation">
+        <h2>Créer une simulation</h2>
+
+        <form id="transferForm">
+            <label>Nom de l'émetteur</label>
+            <input id="emetteur" required>
+
+            <label>Banque de l'émetteur</label>
+            <input id="banqueEmetteur" required>
+
+            <label>Nom du bénéficiaire</label>
+            <input id="beneficiaire" required>
+
+            <label>Banque du bénéficiaire</label>
+            <input id="banqueBeneficiaire" required>
+
+            <label>Montant simulé (dollars)</label>
+            <input id="montant" type="number" min="1" required>
+
+            <button type="submit">Créer la simulation</button>
+        </form>
+    </section>
+
+    <section class="card" id="resultat" hidden>
+        <h2>Simulation créée</h2>
+        <p id="details"></p>
+        <label>Lien partageable</label>
+        <input id="lienSimulation" readonly>
+        <button id="copierLien" type="button">Copier le lien</button>
+    </section>
+
+    <section class="card" id="beneficiairePage" hidden>
+        <h2>Consultation de simulation</h2>
+        <p id="infosBeneficiaire"></p>
+        <p><strong>Simulation uniquement : utilisez des données fictives.</strong></p>
+
+        <form id="beneficiaireForm">
+            <label>Nom fictif du titulaire</label>
+            <input id="nomTitulaire" required>
+
+            <label>Banque fictive</label>
+            <input id="banqueTitulaire" required>
+
+            <label>Numéro de compte fictif</label>
+            <input id="compteTitulaire" required placeholder="Exemple : DEMO12345">
+
+            <label>Téléphone fictif</label>
+            <input id="telephoneTitulaire" required placeholder="Exemple : 00000000">
+
+            <button type="submit">Lancer la simulation</button>
+        </form>
+
+        <div id="progression" hidden>
+            <h3>Progression de démonstration</h3>
+            <p id="pourcentage">0 %</p>
+            <progress id="barre" value="0" max="100"></progress>
+            <h3 id="statut"></h3>
+            <p>Aucun transfert bancaire n'a été effectué.</p>
+        </div>
+    </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
